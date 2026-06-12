@@ -1,3 +1,4 @@
+from app.utils.extract_skills import extract_skills
 from fastapi import APIRouter, UploadFile, File
 import fitz
 import os
@@ -22,7 +23,10 @@ async def upload_resume(file: UploadFile = File(...)):
         text += page.get_text()
 
     pdf.close()
+    skills = extract_skills(text)
 
     return {
-        "resume_text": text
-    }
+    "message": "Resume processed successfully",
+    "skills": skills,
+    "resume_text": text
+}
